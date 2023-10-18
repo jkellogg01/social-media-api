@@ -17,6 +17,9 @@ const reactionFields = {
   createdAt: {
     type: Date,
     default: Date.now(),
+    get: function formatDate() {
+      return this.toUTCString();
+    },
   },
 };
 

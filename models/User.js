@@ -11,16 +11,21 @@ const userFields = {
     type: String,
     required: true,
     unique: true,
-    validate: [isEmail, 'invalid email'],
+    // TODO: This does not work
+    validate: [isEmail, "invalid email"],
   },
-  thoughts: [{
-    type: Types.ObjectId,
-    ref: 'thought',
-  }],
-  friends: [{
-    type: Types.ObjectId,
-    ref: 'thought',
-  }],
+  thoughts: [
+    {
+      type: Types.ObjectId,
+      ref: "thought",
+    },
+  ],
+  friends: [
+    {
+      type: Types.ObjectId,
+      ref: "user",
+    },
+  ],
 };
 
 const userOpts = {
@@ -31,9 +36,9 @@ const userOpts = {
 
 const userSchema = new Schema(userFields, userOpts);
 
-const User = model('user', userSchema);
+const User = model("user", userSchema);
 
-User.virtuals('friendCount').get(function () {
+User.virtuals("friendCount").get(function () {
   return this.friends.length;
 });
 

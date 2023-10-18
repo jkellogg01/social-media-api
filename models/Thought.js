@@ -11,17 +11,15 @@ const thoughtFields = {
   createdAt: {
     type: Date,
     default: Date.now(),
+    get: function formatDate() {
+      return this.toUTCString();
+    },
   },
   username: {
     type: String,
     required: true,
   },
-  reactions: [
-    {
-      type: Types.ObjectId,
-      ref: "reaction",
-    },
-  ],
+  reactions: [reactionSchema],
 };
 
 const thoughtOpts = {
