@@ -1,4 +1,4 @@
-const { Thought } = require("../models");
+const Thought = require("../models/Thought");
 
 module.exports = {
   async getThoughts(req, res) {
@@ -14,7 +14,7 @@ module.exports = {
     try {
       const data = await Thought.find(
         { _id: req.params.thoughtId },
-        { select: "-__v" },
+        { select: "-__v" }
       );
       if (!data) {
         res.status(404).json({ message: "Thought not found" });
@@ -40,7 +40,7 @@ module.exports = {
       const data = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
         req.body,
-        { new: true },
+        { new: true }
       );
       if (!data) {
         res.status(404).json({ message: "Thought not found" });
@@ -64,4 +64,4 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-}
+};
