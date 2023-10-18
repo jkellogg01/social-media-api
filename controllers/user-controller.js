@@ -14,7 +14,7 @@ module.exports = {
     try {
       const data = await User.find(
         { _id: req.params.userId },
-        { select: "-__v" },
+        { select: "-__v" }
       );
       if (!data) {
         res.status(404).json({ message: "User not found" });
@@ -40,7 +40,7 @@ module.exports = {
       const data = await User.findOneAndUpdate(
         { _id: req.params.userId },
         req.body,
-        { new: true },
+        { new: true }
       );
       if (!data) {
         res.status(404).json({ message: "User not found" });
@@ -64,4 +64,4 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-}
+};
