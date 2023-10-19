@@ -1,4 +1,5 @@
 const Thought = require("../models/Thought");
+const User = require("../models/User");
 
 module.exports = {
   async getThoughts(req, res) {
@@ -26,6 +27,15 @@ module.exports = {
   async createThought(req, res) {
     try {
       const data = await Thought.create(req.body);
+      const thoughtUser = await User.findOne({ _id: req.body.userId });
+      if (!thoughtUser) {
+        res
+          .status(404)
+          .json({ message: "Thought creation failed: User not found" });
+        Thought.deleteOne(data);
+        return;
+      }
+      thoughtUser.thoughts.push(data._id);
       res.status(201).json(data);
     } catch (err) {
       res.status(500).send(err);
