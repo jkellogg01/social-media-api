@@ -4,7 +4,7 @@ const {
   getSingleThought,
   createThought,
   updateThought,
-  deleteThought
+  deleteThought,
 } = require("../../controllers/thought-controller");
 
 router.get("/", getThoughts);

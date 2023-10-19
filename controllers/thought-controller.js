@@ -6,7 +6,7 @@ module.exports = {
       const data = await Thought.find();
       res.status(200).json(data);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).send(err);
     }
   },
 
@@ -19,7 +19,7 @@ module.exports = {
       }
       res.status(200).json(data);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).send(err);
     }
   },
 
@@ -28,7 +28,7 @@ module.exports = {
       const data = await Thought.create(req.body);
       res.status(201).json(data);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).send(err);
     }
   },
 
@@ -45,7 +45,7 @@ module.exports = {
       }
       res.status(200).json(data);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).send(err);
     }
   },
 
@@ -58,7 +58,45 @@ module.exports = {
       }
       res.status(200).json(data);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).send(err);
+    }
+  },
+
+  async addThoughtReaction(req, res) {
+    try {
+      const data = await Thought.findOne({ _id: req.params.thoughtId });
+      if (!data) {
+        res
+          .status(400)
+          .json({ message: "Thought not found; Create reaction failed." });
+        return;
+      }
+      const reaction = data.reactions.create(req.body);
+      if (!reaction) {
+        res.status(404).json({ message: "Failed to create reaction" });
+        return;
+      }
+      data.save();
+      res.status(201).json(data);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  async removeThoughtReaction(req, res) {
+    try {
+      const data = await Thought.findOne({ _id: req.params.thoughtId });
+      if (!data) {
+        res
+          .status(400)
+          .json({ message: "Thought not found; Create reaction failed." });
+        return;
+      }
+      data.reactions.pull({ _id: req.params.reactionId });
+      data.save();
+      res.status(204).json(data);
+    } catch (err) {
+      res.status(500).send(err);
     }
   },
 };
