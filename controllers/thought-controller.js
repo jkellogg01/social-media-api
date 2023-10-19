@@ -28,6 +28,7 @@ module.exports = {
     try {
       const data = await Thought.create(req.body);
       const thoughtUser = await User.findOne({ _id: req.body.userId });
+      console.info(thoughtUser);
       if (!thoughtUser) {
         res
           .status(404)
@@ -35,7 +36,8 @@ module.exports = {
         Thought.deleteOne(data);
         return;
       }
-      thoughtUser.thoughts.push(data._id);
+      thoughtUser.thoughts.push(data.id);
+      thoughtUser.save();
       res.status(201).json(data);
     } catch (err) {
       res.status(500).send(err);
@@ -82,10 +84,8 @@ module.exports = {
         return;
       }
       const reaction = data.reactions.create(req.body);
-      if (!reaction) {
-        res.status(404).json({ message: "Failed to create reaction" });
-        return;
-      }
+      data.reactions.push(reaction);
+      console.info(reaction);
       data.save();
       res.status(201).json(data);
     } catch (err) {
