@@ -28,7 +28,6 @@ module.exports = {
     try {
       const data = await Thought.create(req.body);
       const thoughtUser = await User.findOne({ _id: req.body.userId });
-      console.info(thoughtUser);
       if (!thoughtUser) {
         res
           .status(404)
@@ -85,7 +84,6 @@ module.exports = {
       }
       const reaction = data.reactions.create(req.body);
       data.reactions.push(reaction);
-      console.info(reaction);
       data.save();
       res.status(201).json(data);
     } catch (err) {
