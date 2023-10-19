@@ -12,10 +12,7 @@ module.exports = {
 
   async getSingleThought(req, res) {
     try {
-      const data = await Thought.find(
-        { _id: req.params.thoughtId },
-        { select: "-__v" }
-      );
+      const data = await Thought.find({ _id: req.params.thoughtId });
       if (!data) {
         res.status(404).json({ message: "Thought not found" });
         return;
