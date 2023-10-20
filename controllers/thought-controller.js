@@ -7,6 +7,7 @@ module.exports = {
       const data = await Thought.find();
       res.status(200).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
@@ -20,6 +21,7 @@ module.exports = {
       }
       res.status(200).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
@@ -39,6 +41,7 @@ module.exports = {
       thoughtUser.save();
       res.status(201).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
@@ -56,19 +59,21 @@ module.exports = {
       }
       res.status(200).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
 
   async deleteThought(req, res) {
     try {
-      const data = await Thought.delete({ _id: req.body.thoughtId });
+      const data = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
       if (!data) {
         res.status(404).json({ message: "Thought not found" });
         return;
       }
       res.status(200).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
@@ -87,6 +92,7 @@ module.exports = {
       data.save();
       res.status(201).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
@@ -100,10 +106,11 @@ module.exports = {
           .json({ message: "Thought not found; Create reaction failed." });
         return;
       }
-      data.reactions.pull({ _id: req.params.reactionId });
+      data.reactions.pull({ reactionId: req.params.reactionId });
       data.save();
       res.status(204).json(data);
     } catch (err) {
+      console.error(err);
       res.status(500).send(err);
     }
   },
